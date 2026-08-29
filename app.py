@@ -82,6 +82,12 @@ def create_app(config_object=Config):
 # DATABASE
 # ==========================
 
+def get_db(app):
+    conn = sqlite3.connect(app.config["DATABASE"])
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
 def init_db(app):
     conn = get_db(app)
     cur = conn.cursor()
@@ -123,6 +129,11 @@ def init_db(app):
     if generated:
         admin_password = secrets.token_urlsafe(12)
 
+    # INSERT OR IGNORE + rowcount check (instead of SELECT-then-INSERT) makes
+    # this safe when multiple worker processes boot at the same time and
+    # both race to create the seed admin user -- only one of them actually
+    # inserts a row, and the others are silent no-ops instead of crashing
+    # on a UNIQUE constraint violation.
     cur.execute(
         "INSERT OR IGNORE INTO users(username,password) VALUES(?,?)",
         (admin_username, generate_password_hash(admin_password))
@@ -138,6 +149,10 @@ def init_db(app):
         )
 
     conn.close()
+
+
+def register_routes(app):
+
     # ==========================
     # HOME
     # ==========================
