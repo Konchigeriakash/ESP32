@@ -4,18 +4,18 @@
 #include <ArduinoJson.h>   // Install via Library Manager: "ArduinoJson" by Benoit Blanchon
 
 // ===== Wi-Fi details =====
-const char* WIFI_SSID = "OPPO";
-const char* WIFI_PASSWORD = "abcdefgh";
+const char* WIFI_SSID = "RITSTUDENTS";
+const char* WIFI_PASSWORD = "ritstudents";
 
 // ===== Server details =====
 // Your deployed Flask app, e.g. "https://your-app.onrender.com"
 // Use https:// in production. Only use http:// for local testing.
-const char* SERVER_URL = "https://your-app.example.com";
+const char* SERVER_URL = "https://smart-home-1hjk.onrender.com";
 
 // Must match DEVICE_API_KEY in the server's .env / environment variables.
 // This proves to the server that requests are really coming from this
 // device -- keep it secret, don't commit a real key to a public repo.
-const char* DEVICE_API_KEY = "REPLACE_WITH_DEVICE_API_KEY";
+const char* DEVICE_API_KEY = "99aea5786b3427016e63e501fcd717ca";
 
 // How often to check in with the server, in milliseconds.
 const unsigned long POLL_INTERVAL_MS = 2000;
