@@ -122,35 +122,26 @@ def init_db(app):
     """)
     conn.commit()
 
-    admin_username = app.config["ADMIN_USERNAME"]
-    user = cur.execute(
-        "SELECT * FROM users WHERE username=?",
-        (admin_username,)
-    ).fetchone()
+        admin_username = app.config["ADMIN_USERNAME"]
+    admin_password = app.config["ADMIN_PASSWORD"]
+    generated = admin_password is None
+    if generated:
+        admin_password = secrets.token_urlsafe(12)
 
-    if user is None:
-        admin_password = app.config["ADMIN_PASSWORD"]
-        generated = admin_password is None
+    cur.execute(
+        "INSERT OR IGNORE INTO users(username,password) VALUES(?,?)",
+        (admin_username, generate_password_hash(admin_password))
+    )
+    conn.commit()
 
-        if generated:
-            admin_password = secrets.token_urlsafe(12)
-
-        cur.execute(
-            "INSERT INTO users(username,password) VALUES(?,?)",
-            (admin_username, generate_password_hash(admin_password))
+    if generated and cur.rowcount > 0:
+        logger.warning(
+            "No ADMIN_PASSWORD set. Generated a one-time password for "
+            "user '%s': %s -- change it after logging in, or set "
+            "ADMIN_PASSWORD before the next deploy.",
+            admin_username, admin_password
         )
-        conn.commit()
-
-        if generated:
-            logger.warning(
-                "No ADMIN_PASSWORD set. Generated a one-time password for "
-                "user '%s': %s -- change it after logging in, or set "
-                "ADMIN_PASSWORD before the next deploy.",
-                admin_username, admin_password
-            )
-
     conn.close()
-
 
 def register_routes(app):
 
