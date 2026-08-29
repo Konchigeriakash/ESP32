@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Home Dashboard</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- Sidebar -->
+
+<div class="sidebar">
+
+<div class="logo">
+
+<i class="fa-solid fa-house"></i>
+
+<h2>Smart Home</h2>
+
+</div>
+
+<ul>
+
+<li class="active">
+
+<i class="fa-solid fa-house"></i>
+
+<span>Dashboard</span>
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-fan"></i>
+
+<span>Devices</span>
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-microphone"></i>
+
+<span>Voice Control</span>
+
+</li>
+
+<li>
+
+<i class="fa-solid fa-gear"></i>
+
+<span>Settings</span>
+
+</li>
+
+<li onclick="window.location.href='/logout'">
+
+<i class="fa-solid fa-right-from-bracket"></i>
+
+<span>Logout</span>
+
+</li>
+
+</ul>
+
+</div>
+
+<!-- Main Content -->
+
+<div class="main-content">
+
+<!-- Top Bar -->
+
+<div class="top-bar">
+
+<div>
+
+<h1>
+
+Welcome,
+{{ username }}
+
+👋
+
+</h1>
+
+<p>
+
+Control your home from anywhere.
+
+</p>
+
+</div>
+
+<div
+class="status-badge"
+id="esp32-status">
+
+<span class="dot"></span>
+
+ESP32 Checking...
+
+</div>
+
+</div>
+
+<!-- Device Cards -->
+
+<div class="device-grid">
+
+<!-- Fan -->
+
+<div class="device-card">
+
+<div class="device-icon">
+
+<i class="fa-solid fa-fan"></i>
+
+</div>
+
+<h2>Fan</h2>
+
+<p>Connected</p>
+
+<div
+id="status-fan"
+class="pill off">
+
+OFF
+
+</div>
+
+<button
+class="toggle-btn"
+onclick="toggleDevice('fan',this)">
+
+Turn ON
+
+</button>
+
+</div>
+
+<!-- Light -->
+
+<div class="device-card">
+
+<div class="device-icon">
+
+<i class="fa-solid fa-lightbulb"></i>
+
+</div>
+
+<h2>Light</h2>
+
+<p>Connected</p>
+
+<div
+id="status-light"
+class="pill off">
+
+OFF
+
+</div>
+
+<button
+class="toggle-btn"
+onclick="toggleLight(this)">
+
+Turn ON
+
+</button>
+
+</div>
+    <!-- Voice Assistant -->
+
+<div class="voice-card">
+
+<h2>
+
+<i class="fa-solid fa-microphone"></i>
+
+Voice Assistant
+
+</h2>
+
+<p id="voice-status">
+
+Press the microphone and say:
+
+<b>"Fan On"</b>
+
+or
+
+<b>"Light On"</b>
+
+</p>
+
+<button
+class="voice-btn"
+onclick="startVoiceControl()">
+
+🎤
+
+</button>
+
+</div>
+
+<!-- System Status -->
+
+<div class="system-grid">
+
+<div class="system-card">
+
+<h3>
+
+📡 ESP32
+
+</h3>
+
+<p id="esp-online">
+
+Checking...
+
+</p>
+
+</div>
+
+<div class="system-card">
+
+<h3>
+
+🌀 Fan Status
+
+</h3>
+
+<p id="fan-state">
+
+OFF
+
+</p>
+
+</div>
+
+<div class="system-card">
+
+<h3>
+
+💡 Light Status
+
+</h3>
+
+<p id="light-state">
+
+OFF
+
+</p>
+
+</div>
+
+<div class="system-card">
+
+<h3>
+
+🌐 Network
+
+</h3>
+
+<p>
+
+Wi-Fi Connected
+
+</p>
+
+</div>
+
+</div>
+
+<!-- Activity -->
+
+<div class="activity-card">
+
+<h2>
+
+Recent Activity
+
+</h2>
+
+<ul id="activity-list">
+
+<li>
+
+System Started
+
+</li>
+
+<li>
+
+Waiting for ESP32...
+
+</li>
+
+</ul>
+
+</div>
+    </div>
+
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+
+</html>
