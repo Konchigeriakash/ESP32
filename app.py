@@ -82,12 +82,6 @@ def create_app(config_object=Config):
 # DATABASE
 # ==========================
 
-def get_db(app):
-    conn = sqlite3.connect(app.config["DATABASE"])
-    conn.row_factory = sqlite3.Row
-    return conn
-
-
 def init_db(app):
     conn = get_db(app)
     cur = conn.cursor()
@@ -122,9 +116,10 @@ def init_db(app):
     """)
     conn.commit()
 
-        admin_username = app.config["ADMIN_USERNAME"]
+    admin_username = app.config["ADMIN_USERNAME"]
     admin_password = app.config["ADMIN_PASSWORD"]
     generated = admin_password is None
+
     if generated:
         admin_password = secrets.token_urlsafe(12)
 
@@ -141,10 +136,8 @@ def init_db(app):
             "ADMIN_PASSWORD before the next deploy.",
             admin_username, admin_password
         )
+
     conn.close()
-
-def register_routes(app):
-
     # ==========================
     # HOME
     # ==========================
